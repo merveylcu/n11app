@@ -6,8 +6,8 @@ import retrofit2.Retrofit
 
 val apiModule = module {
 
-    fun provideN11Api(retrofit: Retrofit): UserApi {
+    fun provideUserApi(retrofit: Retrofit): UserApi {
         return retrofit.create(UserApi::class.java)
     }
-    single { provideN11Api(get()) }
+    single { provideUserApi(get()) }
 }

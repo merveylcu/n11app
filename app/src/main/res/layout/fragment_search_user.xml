@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="com.merveylcu.n11app.R" />
+
         <variable
             name="viewModel"
             type="com.merveylcu.n11app.ui.search.SearchUserViewModel" />
@@ -13,8 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <com.merveylcu.components.searchedittext.SearchEditText
             android:id="@+id/etSearch"
+            hint="@{R.string.search}"
+            leftIcon="@{android.R.drawable.ic_menu_search}"
+            leftIconVisibility="@{true}"
+            text="@={viewModel.searchText}"
+            textWatcher="@{viewModel.searchTextWatcher}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
