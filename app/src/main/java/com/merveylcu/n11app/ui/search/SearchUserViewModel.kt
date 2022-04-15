@@ -12,6 +12,8 @@ import com.merveylcu.n11app.ui.base.BaseViewModel
 import com.merveylcu.n11app.ui.search.adapter.UserPagingSource
 import com.merveylcu.n11app.util.listener.OnItemClickListener
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
 class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
 
@@ -25,16 +27,18 @@ class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
         }
     }
 
-    fun search(userName: String) {
-        userList =
-            Pager(config = PagingConfig(pageSize = 50, enablePlaceholders = false),
-                pagingSourceFactory = {
-                    UserPagingSource(
-                        userApi, userName
-                    )
-                }
-            ).flow.cachedIn(viewModelScope)
-        state.value = SearchUserVMState.SetUserList()
+    suspend fun search(userName: String) {
+        withContext(coroutineContext) {
+            userList =
+                Pager(config = PagingConfig(pageSize = 50, enablePlaceholders = false),
+                    pagingSourceFactory = {
+                        UserPagingSource(
+                            userApi, userName
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+            state.value = SearchUserVMState.SetUserList()
+        }
     }
 
 }

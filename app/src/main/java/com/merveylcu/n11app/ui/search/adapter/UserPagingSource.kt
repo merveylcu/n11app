@@ -36,7 +36,11 @@ class UserPagingSource(
                 LoadResult.Page(
                     data = response.items,
                     prevKey = if (pageNumber == 0) null else pageNumber - 1,
-                    nextKey = if (response.items.isNullOrEmpty() || response.incomplete_results) null else pageNumber + 1
+                    nextKey = if (response.items.isNullOrEmpty()
+                        || response.incomplete_results
+                        || response.items.size == response.total_count
+                    )
+                        null else pageNumber + 1
                 )
             }
         } catch (e: Exception) {

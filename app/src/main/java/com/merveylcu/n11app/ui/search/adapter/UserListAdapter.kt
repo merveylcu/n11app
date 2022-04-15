@@ -39,7 +39,7 @@ class UserListAdapter(
             oldItem: User,
             newItem: User
         ) =
-            oldItem.id == newItem.id
+            oldItem.login == newItem.login
 
         override fun areContentsTheSame(
             oldItem: User,
