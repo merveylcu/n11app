@@ -12,4 +12,8 @@ class Constants {
         const val base = "https://api.github.com/"
     }
 
+    object Session {
+        const val token = "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"
+    }
+
 }
