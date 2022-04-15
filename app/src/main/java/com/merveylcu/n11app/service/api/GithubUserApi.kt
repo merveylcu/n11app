@@ -12,7 +12,8 @@ interface GithubUserApi {
     @GET("search/users")
     suspend fun getUsers(
         @Query("q") q: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 50
     ): Response<SearchUserResponse>
 
     @GET("users/{user}")
