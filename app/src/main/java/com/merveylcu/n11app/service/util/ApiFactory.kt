@@ -38,7 +38,7 @@ object ApiFactory {
         this.headerMap.clear()
         val headerMap = mutableMapOf<String, String>()
         headerMap["Content-Type"] = "application/json"
-        headerMap["Authorization"] = "token ${Constants.Session.token}"
+        headerMap["access_token"] = Constants.Session.token
         this.headerMap.putAll(headerMap)
         return headerMap
     }
