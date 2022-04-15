@@ -3,12 +3,12 @@ package com.merveylcu.n11app.ui.search.adapter
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.merveylcu.n11app.data.model.search.User
-import com.merveylcu.n11app.service.api.GithubUserApi
+import com.merveylcu.n11app.service.api.UserApi
 import com.merveylcu.n11app.service.util.AppResult
 import com.merveylcu.n11app.service.util.NetworkHandler
 
 class UserPagingSource(
-    private val api: GithubUserApi,
+    private val api: UserApi,
     private val searchUserName: String
 ) :
     PagingSource<Int, User>() {

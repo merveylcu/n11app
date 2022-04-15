@@ -2,6 +2,7 @@ package com.merveylcu.n11app.ui.search
 
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.merveylcu.n11app.R
 import com.merveylcu.n11app.databinding.FragmentSearchUserBinding
@@ -35,6 +36,13 @@ class SearchUserFragment : BaseFragment<SearchUserViewModel, FragmentSearchUserB
                 lifecycleScope.launch {
                     setUserListAdapter()
                 }
+            }
+            is SearchUserVMState.OpenUserDetail -> {
+                findNavController().navigate(
+                    SearchUserFragmentDirections.actionSearchUserFragmentToUserDetailFragment(
+                        state.userName
+                    )
+                )
             }
         }
     }

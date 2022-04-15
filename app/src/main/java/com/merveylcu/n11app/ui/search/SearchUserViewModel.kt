@@ -7,13 +7,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.merveylcu.n11app.data.model.search.User
-import com.merveylcu.n11app.service.api.GithubUserApi
+import com.merveylcu.n11app.service.api.UserApi
 import com.merveylcu.n11app.ui.base.BaseViewModel
 import com.merveylcu.n11app.ui.search.adapter.UserPagingSource
 import com.merveylcu.n11app.util.listener.OnItemClickListener
 import kotlinx.coroutines.flow.Flow
 
-class SearchUserViewModel(private val githubUserApi: GithubUserApi) : BaseViewModel() {
+class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
 
     val isEmptyUser = MutableLiveData(true)
     lateinit var userList: Flow<PagingData<User>>
@@ -30,7 +30,7 @@ class SearchUserViewModel(private val githubUserApi: GithubUserApi) : BaseViewMo
             Pager(config = PagingConfig(pageSize = 50, enablePlaceholders = false),
                 pagingSourceFactory = {
                     UserPagingSource(
-                        githubUserApi, userName
+                        userApi, userName
                     )
                 }
             ).flow.cachedIn(viewModelScope)

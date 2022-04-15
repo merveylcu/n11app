@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface GithubUserApi {
+interface UserApi {
 
     @GET("search/users")
     suspend fun getUsers(
@@ -17,6 +17,6 @@ interface GithubUserApi {
     ): Response<SearchUserResponse>
 
     @GET("users/{user}")
-    suspend fun getUserDetail(@Path("userName") userName: String): Response<UserDetailResponse>
+    suspend fun getUserDetail(@Path("user") userName: String): Response<UserDetailResponse>
 
 }
