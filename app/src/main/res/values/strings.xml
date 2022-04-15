@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">n11app</string>
+    <string name="no_network_connectivity">Internet connection not found</string>
+    <string name="error">Error</string>
+    <string name="error_occurred">Error occurred</string>
+    <string name="ok">OK</string>
+    <string name="okey">OKEY</string>
+    <string name="cancel">Cancel</string>
+</resources>

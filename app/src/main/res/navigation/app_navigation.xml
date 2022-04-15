@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@+id/searchUserFragment">
+    <fragment
+        android:id="@+id/searchUserFragment"
+        android:name="com.merveylcu.n11app.ui.search.SearchUserFragment"
+        android:label="SearchUserFragment">
+        <action
+            android:id="@+id/action_searchUserFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.merveylcu.n11app.ui.detail.UserDetailFragment"
+        android:label="UserDetailFragment">
+        <argument
+            android:name="userName"
+            app:argType="string" />
+    </fragment>
+</navigation>
