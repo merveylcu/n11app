@@ -8,6 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.merveylcu.n11app.data.dao.UserDao
 import com.merveylcu.n11app.data.model.search.User
 import com.merveylcu.n11app.service.api.UserApi
 import com.merveylcu.n11app.ui.base.BaseViewModel
@@ -19,9 +20,13 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.coroutines.coroutineContext
 
-class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
+class SearchUserViewModel(
+    private val userDao: UserDao,
+    private val userApi: UserApi
+) :
+    BaseViewModel() {
 
-    private var timer: Timer? = null
+    private var writingTimer: Timer? = null
     val searchText = MutableLiveData("")
     val isEmptyUser = MutableLiveData(true)
     lateinit var userList: Flow<PagingData<User>>
@@ -39,7 +44,7 @@ class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
                 Pager(config = PagingConfig(pageSize = 50, enablePlaceholders = false),
                     pagingSourceFactory = {
                         UserPagingSource(
-                            userApi, userName
+                            userDao, userApi, userName
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -49,8 +54,8 @@ class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
 
     val searchTextWatcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(edt: Editable) {
-            timer = Timer()
-            timer?.schedule(object : TimerTask() {
+            writingTimer = Timer()
+            writingTimer?.schedule(object : TimerTask() {
                 override fun run() {
                     viewModelScope.launch {
                         search(edt.toString())
@@ -64,7 +69,7 @@ class SearchUserViewModel(private val userApi: UserApi) : BaseViewModel() {
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            timer?.cancel()
+            writingTimer?.cancel()
         }
     }
 
