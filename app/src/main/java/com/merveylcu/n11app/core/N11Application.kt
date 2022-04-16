@@ -9,7 +9,14 @@ import org.koin.core.context.startKoin
 class N11Application : Application() {
 
     private val koinModules =
-        listOf(apiModule, databaseModule, networkModule, repositoryModule, viewModelModule)
+        listOf(
+            apiModule,
+            databaseModule,
+            firebaseDatabase,
+            networkModule,
+            repositoryModule,
+            viewModelModule
+        )
 
     override fun onCreate() {
         super.onCreate()

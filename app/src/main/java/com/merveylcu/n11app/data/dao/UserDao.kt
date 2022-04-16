@@ -8,5 +8,5 @@ import com.merveylcu.n11app.data.model.search.User
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUsers(users: List<User>)
+    fun insertUser(users: User)
 }

@@ -5,8 +5,12 @@ import com.merveylcu.n11app.ui.base.BaseActivity
 class Constants {
 
     object App {
-        var databaseName = "UserDatabase"
         var latestActivity: BaseActivity<*, *>? = null
+    }
+
+    object Database {
+        var name = "UserDatabase"
+        var userTable = "users"
     }
 
     object Url {

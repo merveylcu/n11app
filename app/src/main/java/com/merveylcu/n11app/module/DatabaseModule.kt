@@ -14,7 +14,7 @@ val databaseModule = module {
         return Room.databaseBuilder(
             application,
             UserDatabase::class.java,
-            Constants.App.databaseName
+            Constants.Database.name
         )
             .fallbackToDestructiveMigration()
             .allowMainThreadQueries()

@@ -12,6 +12,6 @@ val viewModelModule = module {
     viewModel { DialogViewModel() }
     viewModel { SplashViewModel() }
     viewModel { HomePageViewModel() }
-    viewModel { SearchUserViewModel(userDao = get(), userApi = get()) }
+    viewModel { SearchUserViewModel(userRepo = get()) }
     viewModel { UserDetailViewModel(userRepo = get()) }
 }
