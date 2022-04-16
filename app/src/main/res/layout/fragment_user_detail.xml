@@ -33,7 +33,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvUserName"
                 style="@style/textViewStyle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{viewModel.userName}"
@@ -42,6 +42,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvUserAvatar" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivFavorite"
+                onSingleClick="@{viewModel.onFavorite}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:scaleType="fitCenter"
+                android:src="@{viewModel.isFavorite() ? @drawable/ic_favorited : @drawable/ic_not_favorited}"
+                app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
+                app:layout_constraintStart_toEndOf="@+id/tvUserName"
+                app:layout_constraintTop_toTopOf="@+id/tvUserName" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvName"

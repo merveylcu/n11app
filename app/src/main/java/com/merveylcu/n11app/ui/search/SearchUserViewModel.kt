@@ -33,6 +33,15 @@ class SearchUserViewModel(private val userRepo: UserRepo) : BaseViewModel() {
         }
     }
 
+    val onFavorite = object : OnItemClickListener {
+        override fun onItemClick(item: Any?, action: String?) {
+            val user = item as User
+            viewModelScope.launch {
+                userRepo.setUserFavorite(user.login, user.isFavorite)
+            }
+        }
+    }
+
     private var writingTimer: Timer? = null
     val searchTextWatcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(editable: Editable) {

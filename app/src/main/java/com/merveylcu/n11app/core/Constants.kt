@@ -9,8 +9,8 @@ class Constants {
     }
 
     object Database {
-        var name = "UserDatabase"
-        var userTable = "users"
+        const val name = "UsersDatabase"
+        const val userTable = "Users"
     }
 
     object Url {

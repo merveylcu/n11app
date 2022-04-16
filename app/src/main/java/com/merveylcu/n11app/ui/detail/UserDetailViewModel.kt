@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.merveylcu.n11app.data.repo.UserRepo
 import com.merveylcu.n11app.service.util.AppResult
 import com.merveylcu.n11app.ui.base.BaseViewModel
+import com.merveylcu.n11app.util.listener.OnSingleClickListener
 import kotlinx.coroutines.launch
 
 class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
@@ -14,6 +15,17 @@ class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
     val bio = MutableLiveData("")
     val avatarUrl = MutableLiveData("")
     val htmlUrl = MutableLiveData("")
+    val isFavorite = MutableLiveData(false)
+
+    val onFavorite = OnSingleClickListener {
+        viewModelScope.launch {
+            isFavorite.value = !(isFavorite.value ?: false)
+            userRepo.setUserFavorite(
+                userName.value ?: "",
+                isFavorite.value ?: false
+            )
+        }
+    }
 
     fun getUserDetail(userName: String) {
         this.userName.value = userName
@@ -25,6 +37,7 @@ class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
                         bio.value = it.bio
                         avatarUrl.value = it.avatar_url
                         htmlUrl.value = it.html_url
+                        isFavorite.value = userRepo.getUserFavorite(userName)
                     }
                 }
                 else -> {}

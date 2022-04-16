@@ -25,6 +25,10 @@ interface UserRepo {
     suspend fun saveUsersToDB(users: PagingData<User>)
 
     suspend fun saveUsersToFirebase(users: PagingData<User>)
+
+    suspend fun setUserFavorite(userName: String, isFavorite: Boolean)
+
+    suspend fun getUserFavorite(userName: String): Boolean
 }
 
 class UserRepoImpl(
@@ -54,7 +58,7 @@ class UserRepoImpl(
 
     override suspend fun saveUsersToDB(users: PagingData<User>) {
         users.map { user ->
-            dao.insertUser(user)
+            dao.addUser(user)
         }
     }
 
@@ -62,6 +66,14 @@ class UserRepoImpl(
         users.map { user ->
             frb.child(user.login).setValue(user)
         }
+    }
+
+    override suspend fun setUserFavorite(userName: String, isFavorite: Boolean) {
+        dao.setUserFavorite(userName, isFavorite)
+    }
+
+    override suspend fun getUserFavorite(userName: String): Boolean {
+        return dao.getUserFavorite(userName)
     }
 
 }

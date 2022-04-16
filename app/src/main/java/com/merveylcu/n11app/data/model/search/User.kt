@@ -2,8 +2,9 @@ package com.merveylcu.n11app.data.model.search
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.merveylcu.n11app.core.Constants
 
-@Entity(tableName = "userTable")
+@Entity(tableName = Constants.Database.userTable)
 data class User(
     @PrimaryKey
     val id: Int,
@@ -24,5 +25,6 @@ data class User(
     val received_events_url: String,
     val type: String,
     val site_admin: Boolean,
-    val score: Int
+    val score: Int,
+    var isFavorite: Boolean = false
 )
