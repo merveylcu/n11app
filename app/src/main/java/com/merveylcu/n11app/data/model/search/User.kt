@@ -1,8 +1,13 @@
 package com.merveylcu.n11app.data.model.search
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "userTable")
 data class User(
-    val login: String,
+    @PrimaryKey
     val id: Int,
+    val login: String,
     val node_id: String,
     val avatar_url: String,
     val gravatar_id: String,

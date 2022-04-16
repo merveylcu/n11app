@@ -18,7 +18,7 @@ class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
     fun getUserDetail(userName: String) {
         this.userName.value = userName
         viewModelScope.launch {
-            when (val result = userRepo.getUserDetail(userName)) {
+            when (val result = userRepo.getUserDetailFromApi(userName)) {
                 is AppResult.Success -> {
                     result.successData?.let {
                         name.value = it.name

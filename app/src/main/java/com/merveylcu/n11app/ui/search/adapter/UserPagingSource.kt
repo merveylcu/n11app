@@ -15,7 +15,11 @@ class UserPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
         val pageNumber = params.key ?: 0
-        return try {
+        try {
+            if (searchUserName.isEmpty()) {
+                return LoadResult.Error(Exception(PagingLoadError.NoResults.name))
+            }
+
             val result = NetworkHandler.sendRequest(
                 request = { api.getUsers(searchUserName, pageNumber) },
                 isAsync = pageNumber != 0,
@@ -30,8 +34,8 @@ class UserPagingSource(
                 }
             }
 
-            if (response == null || (pageNumber == 0 && response.items.isNullOrEmpty())) {
-                LoadResult.Error(Exception())
+            return if (response == null || (pageNumber == 0 && response.items.isNullOrEmpty())) {
+                return LoadResult.Error(Exception(PagingLoadError.NoResults.name))
             } else {
                 LoadResult.Page(
                     data = response.items,
@@ -44,7 +48,7 @@ class UserPagingSource(
                 )
             }
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            return LoadResult.Error(e)
         }
     }
 
@@ -54,4 +58,8 @@ class UserPagingSource(
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
+}
+
+enum class PagingLoadError {
+    NoResults
 }

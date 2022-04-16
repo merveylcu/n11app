@@ -8,6 +8,11 @@ class Constants {
         var latestActivity: BaseActivity<*, *>? = null
     }
 
+    object Database {
+        var name = "UserDatabase"
+        var userTable = "users"
+    }
+
     object Url {
         const val base = "https://api.github.com/"
     }
