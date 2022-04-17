@@ -9,9 +9,9 @@ object ApiErrorUtils {
 
     fun parseError(response: Response<*>): String {
         val gson = GsonBuilder().create()
-        val apiErrorResponse: APIErrorResponse
+        val apiErrorResponse: ApiErrorResponse
         try {
-            apiErrorResponse = gson.fromJson(response.errorBody()?.string(), APIErrorResponse::class.java)
+            apiErrorResponse = gson.fromJson(response.errorBody()?.string(), ApiErrorResponse::class.java)
         } catch (e: IOException) {
             e.message?.let { Log.d("exception", it) }
             return e.message ?: ""

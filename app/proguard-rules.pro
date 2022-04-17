@@ -1,6 +1,5 @@
 -keep class com.merveylcu.n11app.data.model.** { *; }
--keep class com.merveylcu.network.APIError { *; }
--keep class com.merveylcu.network.APIErrorResponse { *; }
+-keep class com.merveylcu.network.ApiErrorResponse { *; }
 
 # gson
 -dontwarn sun.misc.**
