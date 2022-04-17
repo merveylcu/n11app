@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "n11app"
 include ':app'
 include ':components'
+include ':network'

@@ -1,18 +1,34 @@
-package com.merveylcu.n11app.service.util
+package com.merveylcu.network
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.merveylcu.n11app.R
-import com.merveylcu.n11app.core.Constants
-import com.merveylcu.n11app.util.extensions.getStr
-import com.merveylcu.n11app.util.extensions.showDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import retrofit2.Response
 
 object NetworkHandler {
+
+    private var onNetworkError: (() -> Unit)? = null
+    private var onNetworkConnectivityError: (() -> String)? = null
+    private var showLoading: (() -> Unit)? = null
+    private var hideLoading: (() -> Unit)? = null
+    private var onError: ((String) -> Unit)? = null
+
+    fun setNetworkActions(
+        onNetworkError: (() -> Unit)?,
+        onNetworkConnectivityError: (() -> String)?,
+        showLoading: (() -> Unit)?,
+        hideLoading: (() -> Unit)?,
+        onError: ((String) -> Unit)?
+    ) {
+        this.onNetworkError = onNetworkError
+        this.onNetworkConnectivityError = onNetworkConnectivityError
+        this.showLoading = showLoading
+        this.hideLoading = hideLoading
+        this.onError = onError
+    }
 
     suspend fun <T> sendRequest(
         context: Context? = null,
@@ -57,7 +73,7 @@ object NetworkHandler {
 
     private fun <T> checkNetworkError(result: AppResult<T>?): Boolean {
         if (result != null && result is AppResult.Error) {
-            showNetworkErrorDialog()
+            onNetworkError?.invoke()
             return true
         }
         return false
@@ -75,28 +91,18 @@ object NetworkHandler {
     }
 
     private fun noNetworkConnectivityError(): AppResult.Error {
-        val errorTitle = Constants.App.latestActivity!!.getStr(R.string.error)
-        val errorMessage =
-            Constants.App.latestActivity?.getStr(R.string.no_network_connectivity)
-                ?: ""
-
-        Constants.App.latestActivity?.showDialog(
-            title = errorTitle,
-            message = errorMessage,
-            positiveButtonText = Constants.App.latestActivity!!.getStr(R.string.ok)
-        )
-
-        return AppResult.Error(Exception(errorMessage))
+        val message = onNetworkConnectivityError?.invoke()
+        return AppResult.Error(Exception(message))
     }
 
     private fun showLoading(isAsync: Boolean, loadingDelay: Long?, loadingDelayHandler: Handler) {
         if (isAsync) return
 
         if (loadingDelay == null) {
-            Constants.App.latestActivity?.showLoading()
+            showLoading?.invoke()
         } else {
             loadingDelayHandler.postDelayed({
-                Constants.App.latestActivity?.showLoading()
+                showLoading?.invoke()
             }, loadingDelay)
         }
     }
@@ -105,54 +111,18 @@ object NetworkHandler {
         loadingDelayHandler.removeCallbacksAndMessages(null)
 
         if (!isAsync) {
-            Constants.App.latestActivity?.hideLoading()
+            hideLoading?.invoke()
         }
-    }
-
-    private fun showNetworkErrorDialog() {
-        Constants.App.latestActivity?.showDialog(
-            title = Constants.App.latestActivity!!.getStr(R.string.error),
-            message = Constants.App.latestActivity!!.getStr(R.string.error_occurred),
-            positiveButtonText = Constants.App.latestActivity!!.getStr(R.string.ok)
-        )
-    }
-
-    private fun showErrorDialog(
-        title: String,
-        message: String,
-        positiveButtonText: String,
-        positiveButtonAction: (() -> Unit)? = null
-    ) {
-        Constants.App.latestActivity?.showDialog(
-            title = title,
-            message = message,
-            positiveButtonText = positiveButtonText,
-            positiveButtonAction = positiveButtonAction
-        )
     }
 
     private fun <T> handleApiError(
         response: Response<T>,
         isShowErrorDialog: Boolean
     ): AppResult<Nothing> {
-
-        val title = Constants.App.latestActivity!!.getStr(R.string.error)
-        var message = Constants.App.latestActivity!!.getStr(R.string.error_occurred)
-        val error = ApiErrorUtils.parseError(response)
-
-        try {
-            message = error.message ?: ""
-        } catch (e: Exception) {
-        }
-
+        val message = ApiErrorUtils.parseError(response)
         if (isShowErrorDialog) {
-            showErrorDialog(
-                title = title,
-                message = message,
-                positiveButtonText = Constants.App.latestActivity!!.getStr(R.string.ok)
-            )
+            onError?.invoke(message)
         }
-
         return AppResult.Error(Exception(message))
     }
 

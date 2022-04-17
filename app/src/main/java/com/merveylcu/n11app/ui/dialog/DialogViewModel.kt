@@ -7,7 +7,6 @@ import com.merveylcu.n11app.util.listener.OnSingleClickListener
 
 class DialogViewModel : BaseViewModel() {
 
-    val titleText = MutableLiveData("")
     val messageText = MutableLiveData("")
 
     val positiveButtonText = MutableLiveData("")
@@ -23,16 +22,9 @@ class DialogViewModel : BaseViewModel() {
     }
 
     fun initUi(builder: DialogFragment.Builder) {
-        initTitle(builder.getTitle())
         initMessage(builder.getMessage())
         initPositiveButton(builder.getPositiveButtonText())
         initNegativeButton(builder.getNegativeButtonText())
-    }
-
-    private fun initTitle(title: String?) {
-        title?.let {
-            titleText.value = it
-        }
     }
 
     private fun initMessage(message: String?) {

@@ -1,4 +1,4 @@
-package com.merveylcu.n11app.service.util
+package com.merveylcu.network
 
 import android.content.Context
 import android.net.ConnectivityManager
