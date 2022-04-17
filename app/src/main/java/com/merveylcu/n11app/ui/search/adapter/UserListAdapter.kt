@@ -26,7 +26,7 @@ class UserListAdapter(
     inner class UserViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: User) {
+        fun bind(item: User, position: Int) {
             binding.user = item
             binding.container.setOnClickListener {
                 onUserClick.onItemClick(item)
@@ -34,6 +34,7 @@ class UserListAdapter(
             binding.ivFavorite.setOnClickListener {
                 item.isFavorite = !item.isFavorite
                 onUserFavorite.onItemClick(item)
+                notifyItemChanged(position)
             }
             binding.executePendingBindings()
         }
@@ -54,6 +55,6 @@ class UserListAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let { holder.bind(it, position) }
     }
 }

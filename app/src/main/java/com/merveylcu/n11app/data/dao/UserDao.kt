@@ -10,7 +10,7 @@ import com.merveylcu.n11app.data.model.search.User
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addUser(user: User)
+    fun addUsers(user: List<User>)
 
     @Query("UPDATE Users SET isFavorite=:isFavorite WHERE login = :userName")
     fun setUserFavorite(userName: String, isFavorite: Boolean)

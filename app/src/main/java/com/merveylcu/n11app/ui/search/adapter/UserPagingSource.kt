@@ -3,11 +3,15 @@ package com.merveylcu.n11app.ui.search.adapter
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.merveylcu.n11app.data.model.search.User
+import com.merveylcu.n11app.data.repo.UserRepo
 import com.merveylcu.n11app.service.api.UserApi
 import com.merveylcu.n11app.service.util.AppResult
 import com.merveylcu.n11app.service.util.NetworkHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class UserPagingSource(
+    private val repo: UserRepo,
     private val api: UserApi,
     private val searchUserName: String
 ) :
@@ -27,7 +31,14 @@ class UserPagingSource(
             )
             val response = when (result) {
                 is AppResult.Success -> {
-                    result.successData
+                    val data = result.successData
+                    withContext(Dispatchers.IO) {
+                        data?.items?.let {
+                            repo.saveUsersToDB(it)
+                            repo.saveUsersToFirebase(it)
+                        }
+                    }
+                    data
                 }
                 else -> {
                     null

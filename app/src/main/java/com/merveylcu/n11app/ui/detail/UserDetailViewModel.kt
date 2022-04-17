@@ -6,7 +6,9 @@ import com.merveylcu.n11app.data.repo.UserRepo
 import com.merveylcu.n11app.service.util.AppResult
 import com.merveylcu.n11app.ui.base.BaseViewModel
 import com.merveylcu.n11app.util.listener.OnSingleClickListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
 
@@ -37,7 +39,9 @@ class UserDetailViewModel(private val userRepo: UserRepo) : BaseViewModel() {
                         bio.value = it.bio
                         avatarUrl.value = it.avatar_url
                         htmlUrl.value = it.html_url
-                        isFavorite.value = userRepo.getUserFavorite(userName)
+                        withContext(Dispatchers.IO) {
+                            isFavorite.postValue(userRepo.getUserFavorite(userName))
+                        }
                     }
                 }
                 else -> {}
