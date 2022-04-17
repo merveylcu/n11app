@@ -29,6 +29,8 @@ dependencies {
 
         //koin
         implementation "io.insert-koin:koin-android:$versions.koin"
+        androidTestImplementation "io.insert-koin:koin-test:$versions.koin"
+        androidTestImplementation "io.insert-koin:koin-test-junit4:$versions.koin"
 
         //room
         implementation "androidx.room:room-runtime:$versions.room"
