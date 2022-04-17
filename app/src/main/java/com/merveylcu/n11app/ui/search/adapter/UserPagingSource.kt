@@ -5,8 +5,8 @@ import androidx.paging.PagingState
 import com.merveylcu.n11app.data.model.search.User
 import com.merveylcu.n11app.data.repo.UserRepo
 import com.merveylcu.n11app.service.api.UserApi
-import com.merveylcu.n11app.service.util.AppResult
-import com.merveylcu.n11app.service.util.NetworkHandler
+import com.merveylcu.network.AppResult
+import com.merveylcu.network.NetworkHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -10,7 +10,6 @@ fun Activity.toast(message: String) {
 }
 
 fun AppCompatActivity.showDialog(
-    title: String,
     message: String,
     positiveButtonText: String,
     positiveButtonAction: (() -> Unit)? = null,
@@ -18,7 +17,6 @@ fun AppCompatActivity.showDialog(
     negativeButtonAction: (() -> Unit)? = null
 ) {
     DialogFragment.build {
-        title { title }
         message { message }
         positiveButtonText { positiveButtonText }
         positiveButtonAction { positiveButtonAction?.invoke() }

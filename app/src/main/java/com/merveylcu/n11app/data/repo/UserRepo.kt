@@ -9,8 +9,8 @@ import com.merveylcu.n11app.data.dao.UserDao
 import com.merveylcu.n11app.data.model.detail.UserDetailResponse
 import com.merveylcu.n11app.data.model.search.User
 import com.merveylcu.n11app.service.api.UserApi
-import com.merveylcu.n11app.service.util.AppResult
-import com.merveylcu.n11app.service.util.NetworkHandler
+import com.merveylcu.network.AppResult
+import com.merveylcu.network.NetworkHandler
 import com.merveylcu.n11app.ui.search.adapter.UserPagingSource
 import kotlinx.coroutines.flow.Flow
 

@@ -3,7 +3,7 @@ package com.merveylcu.n11app.ui.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.merveylcu.n11app.data.repo.UserRepo
-import com.merveylcu.n11app.service.util.AppResult
+import com.merveylcu.network.AppResult
 import com.merveylcu.n11app.ui.base.BaseViewModel
 import com.merveylcu.n11app.util.listener.OnSingleClickListener
 import kotlinx.coroutines.Dispatchers

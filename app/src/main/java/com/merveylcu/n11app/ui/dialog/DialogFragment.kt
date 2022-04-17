@@ -25,7 +25,6 @@ class DialogFragment private constructor(private val builder: Builder) : BaseDia
         binding = DialogViewBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         viewModel.initUi(builder)
-        binding.tvTitle.text = viewModel.titleText.value ?: ""
         binding.tvMessage.text = viewModel.messageText.value ?: ""
         return binding.root
     }
@@ -62,19 +61,12 @@ class DialogFragment private constructor(private val builder: Builder) : BaseDia
     }
 
     class Builder {
-        private var title: String? = null
         private var message: String? = null
         private var positiveButtonText: String? = null
         private var negativeButtonText: String? = null
         private var positiveButtonAction: (() -> Unit)? = null
         private var negativeButtonAction: (() -> Unit)? = null
         private var cancellable: Boolean = true
-
-        fun title(title: () -> String) {
-            this.title = title()
-        }
-
-        fun getTitle() = title
 
         fun message(message: () -> String) {
             this.message = message()

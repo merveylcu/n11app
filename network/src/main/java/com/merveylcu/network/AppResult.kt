@@ -1,4 +1,4 @@
-package com.merveylcu.n11app.service.util
+package com.merveylcu.network
 
 sealed class AppResult<out T> {
     data class Success<out T>(val successData: T?) : AppResult<T>()

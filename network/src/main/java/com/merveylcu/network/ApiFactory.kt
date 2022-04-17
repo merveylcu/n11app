@@ -1,8 +1,6 @@
-package com.merveylcu.n11app.service.util
+package com.merveylcu.network
 
 import android.util.Log
-import com.merveylcu.n11app.BuildConfig
-import com.merveylcu.n11app.core.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,19 +9,20 @@ import java.util.concurrent.TimeUnit
 
 object ApiFactory {
 
-    private val headerMap = mutableMapOf<String, String>()
+    private var headerMap = mutableMapOf<String, String>()
     private const val connectTimeout: Long = 60
     private const val readTimeout: Long = 60
 
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(baseUrl: String, client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constants.Url.base)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
     }
 
-    fun provideHttpClient(): OkHttpClient {
+    fun provideHttpClient(headerMap: MutableMap<String, String>): OkHttpClient {
+        this.headerMap = headerMap
         val okHttpClientBuilder = OkHttpClient.Builder()
             .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
@@ -34,15 +33,6 @@ object ApiFactory {
         return okHttpClientBuilder.build()
     }
 
-    private fun setHeaders(): MutableMap<String, String> {
-        this.headerMap.clear()
-        val headerMap = mutableMapOf<String, String>()
-        headerMap["Content-Type"] = "application/json"
-        headerMap["access_token"] = Constants.Session.token
-        this.headerMap.putAll(headerMap)
-        return headerMap
-    }
-
     fun getHeaders(): MutableMap<String, String> {
         return headerMap
     }
@@ -51,26 +41,22 @@ object ApiFactory {
         okHttpClientBuilder.addInterceptor {
             val original = it.request()
 
-            val headerMap = setHeaders()
             val requestBuilder = original.newBuilder()
             headerMap.forEach { item ->
                 requestBuilder.header(item.key, item.value)
             }
             val request = requestBuilder.method(original.method, original.body).build()
-            if (BuildConfig.DEBUG) {
-                Log.d("okhttp.OkHttpClient", "headers: ${request.headers}")
-            }
+            Log.d("okhttp.OkHttpClient", "headers: ${request.headers}")
+
             return@addInterceptor it.proceed(request)
         }
     }
 
     private fun addLoggingInterceptor(okHttpClientBuilder: OkHttpClient.Builder) {
-        if (BuildConfig.DEBUG) {
-            val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
-            okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
         }
+        okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
     }
 
 }
