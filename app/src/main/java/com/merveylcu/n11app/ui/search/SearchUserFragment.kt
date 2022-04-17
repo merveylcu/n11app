@@ -41,7 +41,7 @@ class SearchUserFragment : BaseFragment<SearchUserViewModel, FragmentSearchUserB
     }
 
     private suspend fun setUserListAdapter() {
-        val transactionAdapter = UserListAdapter(viewModel.onUser)
+        val transactionAdapter = UserListAdapter(viewModel.onUser, viewModel.onFavorite)
         transactionAdapter.addLoadStateListener {
             if (it.refresh is LoadState.Error) {
                 viewModel.isEmptyUser.value = true

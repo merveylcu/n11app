@@ -10,7 +10,8 @@ import com.merveylcu.n11app.databinding.ItemUserBinding
 import com.merveylcu.n11app.util.listener.OnItemClickListener
 
 class UserListAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val onUserClick: OnItemClickListener,
+    private val onUserFavorite: OnItemClickListener
 ) :
     PagingDataAdapter<User, UserListAdapter.UserViewHolder>(
         Comparator
@@ -25,10 +26,15 @@ class UserListAdapter(
     inner class UserViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: User) {
+        fun bind(item: User, position: Int) {
             binding.user = item
             binding.container.setOnClickListener {
-                onItemClickListener.onItemClick(item)
+                onUserClick.onItemClick(item)
+            }
+            binding.ivFavorite.setOnClickListener {
+                item.isFavorite = !item.isFavorite
+                onUserFavorite.onItemClick(item)
+                notifyItemChanged(position)
             }
             binding.executePendingBindings()
         }
@@ -49,6 +55,6 @@ class UserListAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let { holder.bind(it, position) }
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
 import com.google.firebase.database.DatabaseReference
 import com.merveylcu.n11app.data.dao.UserDao
 import com.merveylcu.n11app.data.model.detail.UserDetailResponse
@@ -14,7 +13,6 @@ import com.merveylcu.n11app.service.util.AppResult
 import com.merveylcu.n11app.service.util.NetworkHandler
 import com.merveylcu.n11app.ui.search.adapter.UserPagingSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 interface UserRepo {
 
@@ -22,9 +20,13 @@ interface UserRepo {
 
     suspend fun getUserDetailFromApi(userName: String): AppResult<UserDetailResponse>
 
-    suspend fun saveUsersToDB(users: PagingData<User>)
+    suspend fun saveUsersToDB(users: List<User>)
 
-    suspend fun saveUsersToFirebase(users: PagingData<User>)
+    suspend fun saveUsersToFirebase(users: List<User>)
+
+    suspend fun setUserFavorite(userName: String, isFavorite: Boolean)
+
+    suspend fun getUserFavorite(userName: String): Boolean
 }
 
 class UserRepoImpl(
@@ -37,14 +39,10 @@ class UserRepoImpl(
         val pager = Pager(config = PagingConfig(pageSize = 50, enablePlaceholders = false),
             pagingSourceFactory = {
                 UserPagingSource(
-                    api, userName
+                    this, api, userName
                 )
             }
         )
-        pager.flow.map {
-            saveUsersToDB(it)
-            saveUsersToFirebase(it)
-        }
         return pager.flow
     }
 
@@ -52,16 +50,26 @@ class UserRepoImpl(
         return NetworkHandler.sendRequest(context, { api.getUserDetail(userName) })
     }
 
-    override suspend fun saveUsersToDB(users: PagingData<User>) {
+    override suspend fun saveUsersToDB(users: List<User>) {
         users.map { user ->
-            dao.insertUser(user)
+            user.isFavorite = getUserFavorite(user.login)
+        }
+        dao.addUsers(users)
+    }
+
+    override suspend fun saveUsersToFirebase(users: List<User>) {
+        users.map { user ->
+            user.isFavorite = getUserFavorite(user.login)
+            frb.child(user.login).setValue(user)
         }
     }
 
-    override suspend fun saveUsersToFirebase(users: PagingData<User>) {
-        users.map { user ->
-            frb.child(user.login).setValue(user)
-        }
+    override suspend fun setUserFavorite(userName: String, isFavorite: Boolean) {
+        dao.setUserFavorite(userName, isFavorite)
+    }
+
+    override suspend fun getUserFavorite(userName: String): Boolean {
+        return dao.getUserFavorite(userName)
     }
 
 }

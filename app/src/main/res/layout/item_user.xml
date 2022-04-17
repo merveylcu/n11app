@@ -33,9 +33,21 @@
             android:layout_margin="8dp"
             android:text="@{user.login}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivFavorite"
             app:layout_constraintStart_toEndOf="@+id/ivUserAvatar"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:scaleType="fitCenter"
+            android:src="@{user.isFavorite() ? @drawable/ic_favorited : @drawable/ic_not_favorited}"
+            app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvUserName"
+            app:layout_constraintTop_toTopOf="@+id/tvUserName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
