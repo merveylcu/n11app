@@ -1,5 +1,5 @@
 # n11app
-n11 Case
+n11 Case App
 
 #### Technologies
 - MVVM
