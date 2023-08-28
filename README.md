@@ -14,7 +14,7 @@ n11 Case
 - Glide
 
 #### MultiModule
-- Components Module
+- Components Module.
 - Network Module
 
 
